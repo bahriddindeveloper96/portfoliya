@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | AdminLTE Style</title>
+    
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div id="app" class="wrapper">
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Portfolio Dashboard</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- About Section -->
+                    <div class="row" id="about">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">About Me</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 text-center">
+                                            <img :src="profile.photo" alt="Profile Photo" class="profile-image">
+                                            <h4 class="mt-2">{{ profile.name }}</h4>
+                                            <p class="text-muted">{{ profile.title }}</p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="d-flex justify-content-end mb-3">
+                                                <a :href="profile.resume" class="btn btn-primary mr-2" download>
+                                                    <i class="fas fa-download"></i> Download Resume
+                                                </a>
+                                                <a :href="profile.github" class="btn btn-dark" target="_blank">
+                                                    <i class="fab fa-github"></i> GitHub Profile
+                                                </a>
+                                            </div>
+                                            <p>{{ profile.bio }}</p>
+                                            <div class="row mt-4">
+                                                <div v-for="info in profile.basicInfo" :key="info.label" class="col-sm-6">
+                                                    <p>
+                                                        <strong>{{ info.label }}:</strong> {{ info.value }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Info Boxes -->
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="fas fa-code"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Projects</span>
+                                    <span class="info-box-number">{{ profile.projects }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="fas fa-briefcase"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Experience</span>
+                                    <span class="info-box-number">{{ profile.experience.years }}+ Years</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="fas fa-users"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Clients</span>
+                                    <span class="info-box-number">{{ profile.clients }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="row" id="skills">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Technical Skills</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="skill-tags">
+                                        <span v-for="skill in profile.skills" class="badge badge-primary m-1">{{ skill }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Languages</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div v-for="lang in profile.languages" class="language-item mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <span>{{ lang.name }}</span>
+                                            <span>{{ lang.level }}%</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" :style="{ width: lang.level + '%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experience Section -->
+                    <div class="row" id="experience">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Work Experience</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="timeline">
+                                        <!-- Current Experience -->
+                                        <div class="timeline-item">
+                                            <span class="time">
+                                                <i class="fas fa-clock"></i> {{ profile.experience.current.period }}
+                                            </span>
+                                            <h3 class="timeline-header">
+                                                <strong>{{ profile.experience.current.position }}</strong> at {{ profile.experience.current.company }}
+                                            </h3>
+                                            <div class="timeline-body">
+                                                <p>{{ profile.experience.current.description }}</p>
+                                                <h5>Key Responsibilities:</h5>
+                                                <ul>
+                                                    <li v-for="resp in profile.experience.current.responsibilities" :key="resp">{{ resp }}</li>
+                                                </ul>
+                                                <div class="mt-2">
+                                                    <span v-for="tech in profile.experience.current.technologies" 
+                                                          :key="tech" 
+                                                          class="badge badge-info mr-1">{{ tech }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Previous Experience -->
+                                        <div v-for="exp in profile.experience.previous" :key="exp.company" class="timeline-item">
+                                            <span class="time">
+                                                <i class="fas fa-clock"></i> {{ exp.period }}
+                                            </span>
+                                            <h3 class="timeline-header">
+                                                <strong>{{ exp.position }}</strong> at {{ exp.company }}
+                                            </h3>
+                                            <div class="timeline-body">
+                                                <p>{{ exp.description }}</p>
+                                                <h5>Key Responsibilities:</h5>
+                                                <ul>
+                                                    <li v-for="resp in exp.responsibilities" :key="resp">{{ resp }}</li>
+                                                </ul>
+                                                <div class="mt-2">
+                                                    <span v-for="tech in exp.technologies" 
+                                                          :key="tech" 
+                                                          class="badge badge-info mr-1">{{ tech }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div class="row" id="projects">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Projects</h3>
+                                    <div class="card-tools">
+                                        <div class="btn-group">
+                                            <button v-for="filter in projectFilters" 
+                                                    @click="filterProjects(filter)"
+                                                    :class="['btn btn-default', {'active': currentFilter === filter}]">
+                                                {{ filter }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4" v-for="project in filteredProjects">
+                                            <div class="card">
+                                                <img :src="project.image" class="card-img-top" :alt="project.title">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ project.title }}</h5>
+                                                    <p class="card-text">{{ project.description }}</p>
+                                                    <div class="mb-2">
+                                                        <span v-for="tech in project.technologies" 
+                                                              class="badge badge-info mr-1">
+                                                            {{ tech }}
+                                                        </span>
+                                                    </div>
+                                                    <a :href="project.link" class="btn btn-primary" target="_blank">
+                                                        <i class="fas fa-external-link-alt"></i> View Project
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="row" id="contact">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Contact Me</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form @submit.prevent="submitForm">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input type="text" class="form-control" v-model="form.name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" v-model="form.email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Message</label>
+                                            <textarea class="form-control" rows="4" v-model="form.message" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane"></i> Send Message
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; {{ new Date().getFullYear() }} {{ profile.name }}.</strong> All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
